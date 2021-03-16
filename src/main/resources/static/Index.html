@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="Chart.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="Chart.css">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>SOME WEIRD TITLE</h1>
+<canvas id="myChart" height="800" width="1600"></canvas>
+
+
+<script>
+var ctx = document.getElementById('myChart').getContext('2d');
+var obj;
+$.getJSON('http://127.0.0.1:8080', function(data){
+obj = data;
+var dates = [];
+obj && obj.forEach(element => {
+    dates.push(element['date']);
+    });
+
+var responses = [];
+obj && obj.forEach(element => {
+    responses.push(element['responseTime']);
+    });
+    obj && func(dates, responses);
+});
+
+
+var func = function(dates, responses){
+return new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: dates,
+        datasets: [{
+            label: 'response time in ms',
+            data: responses,
+            backgroundColor:
+                'rgba(0, 255, 0, 1)'
+            ,
+            borderColor: 'rgba(0, 0, 0, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+    responsive : false,
+    maintainAspectRatio : false,
+    scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});}
+
+
+</script>
+</body>
+</html>
